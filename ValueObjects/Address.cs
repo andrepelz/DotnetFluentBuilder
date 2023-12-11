@@ -14,4 +14,15 @@ public record Address : ValueObject
         yield return City;
         yield return PostalCode;
     }
+
+    public override bool IsValid()
+    {
+        if(string.IsNullOrWhiteSpace(StreetAddress)) return false;
+
+        if(string.IsNullOrWhiteSpace(City)) return false;
+
+        if (string.IsNullOrWhiteSpace(PostalCode)) return false;
+
+        return true;
+    }
 }

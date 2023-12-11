@@ -93,20 +93,13 @@ partial class Employee
 
         private Occupation? TryBuildOccupation()
         {
-            Occupation? newOccupation = null;
-
-            if(
-                Department != string.Empty
-                && AnnualIncome > 0)
+            Occupation newOccupation = new()
             {
-                newOccupation = new()
-                {
-                    Department = Department,
-                    AnnualIncome = AnnualIncome
-                };
-            }
+                Department = Department,
+                AnnualIncome = AnnualIncome
+            };
 
-            return newOccupation;
+            return newOccupation.IsValid() ? newOccupation : null;
         }
     }
 }
@@ -145,22 +138,14 @@ partial class Employee
 
         private Address? TryBuildAddress()
         {
-            Address? newAddress = null;
-
-            if(
-                StreetAddress != string.Empty
-                && City != string.Empty
-                && PostalCode != string.Empty)
+            Address newAddress = new()
             {
-                newAddress = new()
-                {
-                    StreetAddress = StreetAddress,
-                    City = City,
-                    PostalCode = PostalCode
-                };
-            }
+                StreetAddress = StreetAddress,
+                City = City,
+                PostalCode = PostalCode
+            };
 
-            return newAddress;
+            return newAddress.IsValid() ? newAddress : null;
         }
     }
 }

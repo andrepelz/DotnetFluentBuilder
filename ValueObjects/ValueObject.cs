@@ -11,5 +11,7 @@ public abstract record ValueObject
             .Select(x => x != null ? x.GetHashCode() : 0)
             .Aggregate((x, y) => x ^ y);
     }
+
+    public abstract bool IsValid();
 }
 

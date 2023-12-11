@@ -12,4 +12,13 @@ public record Occupation : ValueObject
         yield return Department;
         yield return AnnualIncome;
     }
+
+    public override bool IsValid()
+    {
+        if(string.IsNullOrWhiteSpace(Department)) return false;
+
+        if(AnnualIncome <= 0) return false;
+
+        return true;
+    }
 }
