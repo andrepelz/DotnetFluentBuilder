@@ -12,8 +12,6 @@ partial class Employee
 
     public Address Address { get; private set; } = default!;
     public Occupation? Occupation { get; private set; } = default!;
-    // public string? Department { get; private set; }
-    // public decimal AnnualIncome { get; private set; }
 
     public void Validate()
     {
