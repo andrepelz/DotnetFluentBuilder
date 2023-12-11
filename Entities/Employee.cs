@@ -9,10 +9,7 @@ partial class Employee
 
     private Employee(string name)
         => Name = name;
-
-    // public string StreetAddress { get; private set; } = string.Empty;
-    // public string? City { get; private set; }
-    // public string? PostalCode { get; private set; }
+        
     public Address Address { get; private set; } = default!;
     public string? Department { get; private set; }
     public decimal AnnualIncome { get; private set; }
