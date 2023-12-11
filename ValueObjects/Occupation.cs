@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace ValueObjects;
 
-public record Occupation : ValueObject
+public record Job : ValueObject
 {
     public string Department { get; init; } = string.Empty;
     public decimal AnnualIncome { get; init; }

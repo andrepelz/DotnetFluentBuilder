@@ -11,7 +11,7 @@ partial class Employee
         => Name = name;
 
     public Address Address { get; private set; } = default!;
-    public Occupation? Occupation { get; private set; } = default!;
+    public Job? Job { get; private set; } = default!;
 
     public void Validate()
     {
@@ -80,26 +80,26 @@ partial class Employee
         public EmployeeJobBuilder At(string department)
         {
             Department = department;
-            result.Occupation = TryBuildOccupation();
+            result.Job = TryBuildJob();
             return this;
         }
 
         public EmployeeJobBuilder Earning(decimal annualIncome)
         {
             AnnualIncome = annualIncome;
-            result.Occupation = TryBuildOccupation();
+            result.Job = TryBuildJob();
             return this;
         }
 
-        private Occupation? TryBuildOccupation()
+        private Job? TryBuildJob()
         {
-            Occupation newOccupation = new()
+            Job newJob = new()
             {
                 Department = Department,
                 AnnualIncome = AnnualIncome
             };
 
-            return newOccupation.IsValid() ? newOccupation : null;
+            return newJob.IsValid() ? newJob : null;
         }
     }
 }
