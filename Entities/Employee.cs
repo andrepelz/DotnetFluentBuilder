@@ -9,10 +9,11 @@ partial class Employee
 
     private Employee(string name)
         => Name = name;
-        
+
     public Address Address { get; private set; } = default!;
-    public string? Department { get; private set; }
-    public decimal AnnualIncome { get; private set; }
+    public Occupation? Occupation { get; private set; } = default!;
+    // public string? Department { get; private set; }
+    // public decimal AnnualIncome { get; private set; }
 
     public void Validate()
     {
@@ -72,18 +73,42 @@ partial class Employee
 {
     public class EmployeeJobBuilder : EmployeeBuilder
     {
+        private string Department { get; set; } = string.Empty;
+        private decimal AnnualIncome { get; set; }
+
+
         public EmployeeJobBuilder(Employee e) : base(e) { }
 
         public EmployeeJobBuilder At(string department)
         {
-            result.Department = department;
+            Department = department;
+            result.Occupation = TryBuildOccupation();
             return this;
         }
 
         public EmployeeJobBuilder Earning(decimal annualIncome)
         {
-            result.AnnualIncome = annualIncome;
+            AnnualIncome = annualIncome;
+            result.Occupation = TryBuildOccupation();
             return this;
+        }
+
+        private Occupation? TryBuildOccupation()
+        {
+            Occupation? newOccupation = null;
+
+            if(
+                Department != string.Empty
+                && AnnualIncome > 0)
+            {
+                newOccupation = new()
+                {
+                    Department = Department,
+                    AnnualIncome = AnnualIncome
+                };
+            }
+
+            return newOccupation;
         }
     }
 }
