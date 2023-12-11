@@ -1,6 +1,5 @@
 ﻿using Entities;
 using Commands;
-
 var command = new EmployeeCommand
 {
     Name = "Odmilson",

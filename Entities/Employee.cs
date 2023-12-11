@@ -1,17 +1,19 @@
 using System.Text.Json;
+using ValueObjects;
 
 namespace Entities;
 
 partial class Employee
 {
-    public  string Name { get; private set; }
+    public string Name { get; private set; }
 
     private Employee(string name)
         => Name = name;
 
-    public string StreetAddress { get; private set; } = string.Empty;
-    public string? City { get; private set; }
-    public string? PostalCode { get; private set; }
+    // public string StreetAddress { get; private set; } = string.Empty;
+    // public string? City { get; private set; }
+    // public string? PostalCode { get; private set; }
+    public Address Address { get; private set; } = default!;
     public string? Department { get; private set; }
     public decimal AnnualIncome { get; private set; }
 
@@ -22,14 +24,15 @@ partial class Employee
             "The Name cannot be empty");
 
         AssertionConcern.AssertArgumentNotEmpty(
-            StreetAddress,
-            "The Street Address cannot be empty");
+            Address,
+            "The Address cannot be empty");
     }
 
     public override string ToString()
     {
-        return JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
-
+        return JsonSerializer.Serialize(this, new JsonSerializerOptions { 
+            WriteIndented = true 
+        });
     }
 }
 
@@ -93,24 +96,51 @@ partial class Employee
 {
     public class EmployeeAddressBuilder : EmployeeBuilder
     {
+        private string StreetAddress { get; set; } = string.Empty;
+        private string City { get; set; } = string.Empty;
+        private string PostalCode { get; set; } = string.Empty;
+
         public EmployeeAddressBuilder(Employee e) : base(e) { }
 
         public EmployeeAddressBuilder At(string streetAddress) 
         {
-            result.StreetAddress = streetAddress;
+            StreetAddress = streetAddress;
+            result.Address = TryBuildAddress()!;
             return this;
         }
 
         public EmployeeAddressBuilder In(string city)
         {
-            result.City = city;
+            City = city;
+            result.Address = TryBuildAddress()!;
             return this;
         }
 
         public EmployeeAddressBuilder WithPostalCode(string postalCode)
         {
-            result.PostalCode = postalCode;
+            PostalCode = postalCode;
+            result.Address = TryBuildAddress()!;
             return this;
+        }
+
+        private Address? TryBuildAddress()
+        {
+            Address? newAddress = null;
+
+            if(
+                StreetAddress != string.Empty
+                && City != string.Empty
+                && PostalCode != string.Empty)
+            {
+                newAddress = new()
+                {
+                    StreetAddress = StreetAddress,
+                    City = City,
+                    PostalCode = PostalCode
+                };
+            }
+
+            return newAddress;
         }
     }
 }
